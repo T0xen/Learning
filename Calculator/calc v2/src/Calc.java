@@ -6,9 +6,9 @@ public class Calc {
 
     // run the calc functions here
     public static void main(String[] args) throws Exception {
-        
         //boolean userDone = false;
         boolean isNumber = false;
+        boolean validOp = false;
         float calculation = 0;
         float a = 0, b = 0;
         //while(userDone == false)
@@ -32,6 +32,7 @@ public class Calc {
                         try {
                             a = Float.parseFloat(r.readLine());
                         } catch (NumberFormatException e) {
+                            // if the user enters something that isn't a within the min/max bounds and isn't a number then print this part out too
                             System.out.print("Error: Invalid input. ");
                         }                        
                     }
@@ -66,24 +67,55 @@ public class Calc {
                 }
             }
 
-            System.out.print("What operations would you like to perform (Add/Subtract): ");
+            System.out.print("What operation would you like to perform (Add/Subtract/Multiply/Divide): ");
             String operation = r.readLine();
 
-            // used if statement at first but switches exist lol
-            switch(operation.toLowerCase()) {
-                case "add":
-                    calculation = add(a, b);
-                    break;
-                case "+":
-                    calculation = add(a, b);
-                    break;
-                case "subtract":
-                    calculation = subtract(a, b);
-                    break;
-                case "-":
-                    calculation = subtract(a, b);
+            // tried to inverse the logic (do while loop w/ switch running first and only repeat if validOp is false 
+            // (set validOp to true by default and only change it in the default case, then repeat the switch statement))
+            // but that didn't work, so we get this instead
+            while(validOp == false) {
+                // used if statement at first but switches exist lol
+                switch(operation.toLowerCase()) {
+                    case "add":
+                        calculation = add(a, b);
+                        validOp = true;
+                        break;
+                    case "+":
+                        calculation = add(a, b);
+                        validOp = true;
+                        break;
+                    case "subtract":
+                        calculation = subtract(a, b);
+                        validOp = true;
+                        break;
+                    case "-":
+                        calculation = subtract(a, b);
+                        validOp = true;
+                        break;
+                    case "multiply":
+                        calculation = multiply(a, b);
+                        validOp = true;
+                        break;
+                    case "*":
+                        calculation = multiply(a, b);
+                        validOp = true;
+                        break;
+                    case "divide":
+                        calculation = divide(a, b);
+                        validOp = true;
+                        break;
+                    case "/":
+                        calculation = divide(a, b);
+                        validOp = true;
+                        break;
+                    default:
+                        validOp = false;
+                        System.out.print("Please enter a valid operation this time (Add/Subtract/Multiply/Divide): ");
+                        operation = r.readLine();
+                        break;
+                } 
             }
-        
+            
             System.out.println(calculation);
         //}
     }
@@ -95,6 +127,16 @@ public class Calc {
     // subtract two variables
     public static float subtract(float x, float y) {
         return x - y;
+    }
+
+    // multiply two variables
+    public static float multiply(float x, float y) {
+        return x * y;
+    }
+
+    // divide two variables
+    public static float divide(float x, float y) {
+        return x / y;
     }
 
 }
