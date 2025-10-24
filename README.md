@@ -17,3 +17,9 @@ https://www.geeksforgeeks.org/java/ways-to-read-input-from-console-in-java/
 https://www.geeksforgeeks.org/java/compare-two-strings-in-java/
 
 https://docs.oracle.com/javase/8/docs/api/java/lang/Float.html
+
+https://www.w3schools.com/java/ref_output_printf.asp
+
+https://www.w3schools.com/java/java_arraylist.asp
+
+https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
