@@ -12,10 +12,6 @@ public class Calc {
         boolean isNumber = false; 
         boolean validOp = false;
 
-        // might not need
-        double calculation = 0;
-        double a = 0, b = 0; 
-
         ArrayList<Double> numbers = new ArrayList<Double>();
         ArrayList<Double> calcs = new ArrayList<Double>();
         ArrayList<String> operations = new ArrayList<String>();
@@ -58,29 +54,6 @@ public class Calc {
                 // reset so the next try-catch block repeats while necessary
                 isNumber = false;
             }
-            
-
-            /*
-            System.out.print("Enter a number (decimals are allowed): ");
-            while(isNumber == false) {
-                try {
-                    b = Double.parseDouble(r.readLine());
-                    while(!Double.isFinite(b)) {
-                        System.out.print("Please enter a number that is within min/max bounds this time: ");
-
-                        try {
-                            b = Double.parseDouble(r.readLine());
-                        } catch (NumberFormatException e) {
-                            System.out.print("Error: Invalid input. ");
-                        }                        
-                    }
-
-                    isNumber = true;
-                } catch (NumberFormatException e) {
-                    System.out.print("Error: Invalid input; please enter a number this time: ");
-                }
-            }
-            */
 
             System.out.print("What operation would you like to perform (Add/Subtract/Multiply/Divide): ");
             String operation = r.readLine();
@@ -154,7 +127,7 @@ public class Calc {
             }
         }
 
-        // calc output report (could extend to maybe show the math but eh, might include the operation performed)
+        // calc output report (could extend to maybe show the math when allowing for single line inputs)
         int n = 1;
         System.out.println("Number of operations performed: " + counter);
         for (Double calc : calcs) {
