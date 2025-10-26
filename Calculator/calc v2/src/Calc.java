@@ -7,58 +7,69 @@ public class Calc {
 
     // run the calc functions here
     public static void main(String[] args) throws Exception {
-        boolean userDone = false;
-        boolean isNumber = false;
+        boolean userDone = false; // repeats the program for multiple calculations
+        // input validation
+        boolean isNumber = false; 
         boolean validOp = false;
-        float calculation = 0;
-        float a = 0, b = 0;
-        ArrayList<Float> calcs = new ArrayList<Float>();
+
+        // might not need
+        double calculation = 0;
+        double a = 0, b = 0; 
+
+        ArrayList<Double> numbers = new ArrayList<Double>();
+        ArrayList<Double> calcs = new ArrayList<Double>();
         ArrayList<String> operations = new ArrayList<String>();
         int counter = 0;
+
         while(userDone == false)
         {
             BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
             // could extend to > 2 vars by asking number of digits and using a for loop + array
-            System.out.print("Enter a number (decimals are allowed): ");
+            System.out.print("Enter numbers separated by a space (decimals are allowed): ");
+            String[] nums = r.readLine().split(" ");
 
             // while loop to force user to enter a number until they do didn't kill the 
-            // program when parsing the float if it's the wrong type this could be
+            // program when parsing the Double if it's the wrong type this could be
             // done through if statements, not these nested while-loop try catch blocks 
-            while(isNumber == false) {
-                try {
-                    a = Float.parseFloat(r.readLine());
+            for(int i = 0; i < nums.length; i++) {
+                while(isNumber == false) {
+                    try {
+                        numbers.add(Double.parseDouble(nums[i]));
 
-                    // forces that the user enters a number within the bounds while still checking for non-number inputs
-                    while(!Float.isFinite(a)) {
-                        System.out.print("Please enter a number that is within min/max bounds this time: ");
+                        // forces that the user enters a number within the bounds while still checking for non-number inputs
+                        while(!Double.isFinite(numbers.get(i))) {
+                            System.out.print("Please enter a number that is within min/max bounds this time: ");
 
-                        try {
-                            a = Float.parseFloat(r.readLine());
-                        } catch (NumberFormatException e) {
-                            // if the user enters something that isn't a within the min/max bounds and isn't a number then print this part out too
-                            System.out.print("Error: Invalid input. ");
-                        }                        
+                            try {
+                                numbers.add(Double.parseDouble(nums[i]));
+                            } catch (NumberFormatException e) {
+                                // if the user enters something that isn't a within the min/max bounds and isn't a number then print this part out too
+                                System.out.print("Error: Invalid input. ");
+                            }                        
+                        }
+
+                        isNumber = true;
+                    } catch (NumberFormatException e) {
+                        System.out.print("Error: Invalid input; please enter a number this time: ");
                     }
-
-                    isNumber = true;
-                } catch (NumberFormatException e) {
-                    System.out.print("Error: Invalid input; please enter a number this time: ");
                 }
-            }
         
-            // reset so the next try-catch block repeats while necessary
-            isNumber = false;
+                // reset so the next try-catch block repeats while necessary
+                isNumber = false;
+            }
+            
 
+            /*
             System.out.print("Enter a number (decimals are allowed): ");
             while(isNumber == false) {
                 try {
-                    b = Float.parseFloat(r.readLine());
-                    while(!Float.isFinite(b)) {
+                    b = Double.parseDouble(r.readLine());
+                    while(!Double.isFinite(b)) {
                         System.out.print("Please enter a number that is within min/max bounds this time: ");
 
                         try {
-                            b = Float.parseFloat(r.readLine());
+                            b = Double.parseDouble(r.readLine());
                         } catch (NumberFormatException e) {
                             System.out.print("Error: Invalid input. ");
                         }                        
@@ -69,6 +80,7 @@ public class Calc {
                     System.out.print("Error: Invalid input; please enter a number this time: ");
                 }
             }
+            */
 
             System.out.print("What operation would you like to perform (Add/Subtract/Multiply/Divide): ");
             String operation = r.readLine();
@@ -80,42 +92,42 @@ public class Calc {
                 // used if statement at first but switches exist lol
                 switch(operation.toLowerCase()) {
                     case "add":
-                        calculation = add(a, b);
+                        calcs.add(add(numbers));
                         operations.add("Addition");
                         validOp = true;
                         break;
                     case "+":
-                        calculation = add(a, b);
+                        calcs.add(add(numbers));
                         operations.add("Addition");
                         validOp = true;
                         break;
                     case "subtract":
-                        calculation = subtract(a, b);
+                        calcs.add(subtract(numbers));
                         operations.add("Subtraction");
                         validOp = true;
                         break;
                     case "-":
-                        calculation = subtract(a, b);
+                        calcs.add(subtract(numbers));
                         operations.add("Subtraction");
                         validOp = true;
                         break;
                     case "multiply":
-                        calculation = multiply(a, b);
+                        calcs.add(multiply(numbers));
                         operations.add("Multiplication");
                         validOp = true;
                         break;
                     case "*":
-                        calculation = multiply(a, b);
+                        calcs.add(multiply(numbers));
                         operations.add("Multiplication");
                         validOp = true;
                         break;
                     case "divide":
-                        calculation = divide(a, b);
+                        calcs.add(divide(numbers));
                         operations.add("Division");
                         validOp = true;
                         break;
                     case "/":
-                        calculation = divide(a, b);
+                        calcs.add(divide(numbers));
                         operations.add("Division");
                         validOp = true;
                         break;
@@ -129,9 +141,9 @@ public class Calc {
             // resets for the next iteration of the while program
             isNumber = false;
             validOp = false;
+            numbers.clear();
 
-            System.out.println(calculation);
-            calcs.add(calculation);
+            System.out.println(calcs.get(counter));
             counter++;
 
             System.out.print("Would you like to perform more operations (y/n): ");
@@ -145,30 +157,61 @@ public class Calc {
         // calc output report (could extend to maybe show the math but eh, might include the operation performed)
         int n = 1;
         System.out.println("Number of operations performed: " + counter);
-        for (Float calc : calcs) {
+        for (Double calc : calcs) {
             System.out.printf("Operation %d (%s) output: %f \n", n, operations.get(n - 1), calc);
             n++;
         }
     }
 
     // add two variables
-    public static float add(float x, float y) {
-        return x + y;
+    public static double add(ArrayList<Double> list) {
+        double result = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            result += list.get(i);
+        }
+
+        return result;
     }
 
     // subtract two variables
-    public static float subtract(float x, float y) {
-        return x - y;
+    public static double subtract(ArrayList<Double> list) {
+        double result = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            result -= list.get(i);
+        }
+
+        return result;
     }
 
     // multiply two variables
-    public static float multiply(float x, float y) {
-        return x * y;
+    public static double multiply(ArrayList<Double> list) {
+        double result = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            result *= list.get(i);
+        }
+
+        // there's a potential speedup if i check that the list contains a 0 and just returning 0 immediately
+
+        return result;
     }
 
     // divide two variables
-    public static float divide(float x, float y) {
-        return x / y;
+    public static double divide(ArrayList<Double> list) {
+        // if a divisor is 0, return NaN as a stand-in for undefined
+        double divisorCheck = 0;
+        if (list.contains(divisorCheck) & list.lastIndexOf(divisorCheck) != 0) {
+            return Double.NaN;
+        }
+
+        // theoretically there's a speedup for division if i check that the first number is 0
+        // cause i could just return 0 then, but running the if statement is probably slower than just doing the
+        // calculations until the list of numbers reaches a certain point
+        double result = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            result /= list.get(i);
+        }
+
+        return result;
     }
 
 }
