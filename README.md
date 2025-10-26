@@ -1,10 +1,29 @@
 This is for Java-specific projects meant for learning. I will include brief overviews of the projects I do below this.
 
-## Calculator
+# Calculator
 
-This is a simple calculator that currently uses floats since I rarely worked with them and will (hopefully) be expanded to have a GUI and potentially other features.
+This is a simple calculator using Java since I wanted to gain experience writing code in the language.
 
-### Sources used for help
+## Iteration 1
+
+- Addition, Subtraction, Multiplication, & Division
+- Input validation
+- Multiple operations before the program ends
+- Calculation Output
+
+## Iteration 2 (Planned)
+
+- Change from floats to decimals
+- More than 2 variables per operation
+- Allow an entire operation to be written in one line and parsed
+
+## Iteration 3 & Beyond (Planned)
+
+- Add a GUI w/ AWT
+- Add more operations like a normal calculator
+- Create a branch from the CLI version that allows for math calculations based on games
+
+## Sources Used
 
 https://www.youtube.com/watch?v=BB0gZFpukJU
 
@@ -23,3 +42,6 @@ https://www.w3schools.com/java/ref_output_printf.asp
 https://www.w3schools.com/java/java_arraylist.asp
 
 https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+
+### Iteration 2
+
