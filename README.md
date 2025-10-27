@@ -45,3 +45,8 @@ https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
 
 ### Iteration 2
 
+https://www.geeksforgeeks.org/java/split-a-string-in-java-with-delimiter/
+
+https://softwareengineering.stackexchange.com/questions/356612/how-to-create-a-method-that-takes-array-list-as-argument
+
+https://www.geeksforgeeks.org/java/arraylist-in-java/
