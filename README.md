@@ -13,8 +13,9 @@ This is a simple calculator using Java since I wanted to gain experience writing
 
 ## Iteration 2 (Planned)
 
-- Change from floats to decimals
+- Change from floats to doubles
 - More than 2 variables per operation
+- Code refactoring
 - Allow an entire operation to be written in one line and parsed
 
 ## Iteration 3 & Beyond (Planned)
