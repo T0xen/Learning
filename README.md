@@ -11,11 +11,11 @@ This is a simple calculator using Java since I wanted to gain experience writing
 - Multiple operations before the program ends
 - Calculation Output
 
-## Iteration 2 (Planned)
+## Iteration 2
 
 - Change from floats to doubles
 - More than 2 variables per operation
-- Code refactoring
+- Code refactoring and cleanup
 - Allow an entire operation to be written in one line and parsed
 
 ## Iteration 3 & Beyond (Planned)
