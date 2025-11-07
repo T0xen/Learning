@@ -53,6 +53,7 @@ public class Calc {
                             }                        
                         }
 
+                        numbers.add(number);
                         isNumber = true;
                     } catch (NumberFormatException e) {
                         System.out.printf("Error: Invalid input; please enter a number for digit %d this time: ", i + 1);
@@ -116,9 +117,20 @@ public class Calc {
             System.out.print("Would you like to perform more operations (y/n): ");
             String completed = r.readLine();
             
-            if(completed.equalsIgnoreCase("no") | completed.equalsIgnoreCase("n")) {
-                userDone = true;
+            while(!validOp) {
+                if(completed.equalsIgnoreCase("no") | completed.equalsIgnoreCase("n")) {
+                    userDone = true;
+                    validOp = true;
+                } else if(completed.equalsIgnoreCase("yes") | completed.equalsIgnoreCase("y")) {
+                    userDone = false;
+                    validOp = true;
+                } else {
+                    System.out.print("Please enter yes or no this time: ");
+                    completed = r.readLine();
+                }
             }
+            
+
         }
 
         // calc output report (could extend to maybe show the math when allowing for single line inputs)
