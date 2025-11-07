@@ -9,11 +9,12 @@ public class Calc {
     public static void main(String[] args) throws Exception {
         boolean userDone = false; // repeats the program for multiple calculations
         // input validation
-        boolean isNumber = false; 
+        boolean isNumber = false;
         boolean validOp = false;
 
         ArrayList<Double> numbers = new ArrayList<Double>();
         ArrayList<Double> calcs = new ArrayList<Double>();
+        ArrayList<String> invalidInputs = new ArrayList<String>();
         ArrayList<String> operations = new ArrayList<String>();
         int counter = 0;
 
@@ -21,33 +22,41 @@ public class Calc {
         {
             BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
-            // could extend to > 2 vars by asking number of digits and using a for loop + array
             System.out.print("Enter numbers separated by a space (decimals are allowed): ");
             String[] nums = r.readLine().split(" ");
 
-            // while loop to force user to enter a number until they do didn't kill the 
-            // program when parsing the Double if it's the wrong type this could be
-            // done through if statements, not these nested while-loop try catch blocks 
+            // for loop to check the while loop to force user to enter a number until they do
             for(int i = 0; i < nums.length; i++) {
-                while(isNumber == false) {
+                int attempt = 0; // 
+                while(!isNumber) {
+                //if(!isNumber) {
                     try {
-                        numbers.add(Double.parseDouble(nums[i]));
+                        double number = 0;
+                        if(attempt == 0) {
+                            number = Double.parseDouble(nums[i]);
+                        } else {
+                            number = Double.parseDouble(r.readLine());
+                        }
 
+                        // TO-DO: fix this part that checks if it's w/in bounds
                         // forces that the user enters a number within the bounds while still checking for non-number inputs
-                        while(!Double.isFinite(numbers.get(i))) {
-                            System.out.print("Please enter a number that is within min/max bounds this time: ");
+                        while(!Double.isFinite(number)) {
+                            System.out.printf("Please enter a number that is within min/max bounds this time for digit %d: ", i + 1);
 
                             try {
-                                numbers.add(Double.parseDouble(nums[i]));
+                                number = Double.parseDouble(r.readLine());
                             } catch (NumberFormatException e) {
-                                // if the user enters something that isn't a within the min/max bounds and isn't a number then print this part out too
+                                // if the user enters something that isn't a within the min/max bounds and then enters
+                                // something else that isn't a number then print this part out too
                                 System.out.print("Error: Invalid input. ");
+                                attempt++;
                             }                        
                         }
 
                         isNumber = true;
                     } catch (NumberFormatException e) {
-                        System.out.print("Error: Invalid input; please enter a number this time: ");
+                        System.out.printf("Error: Invalid input; please enter a number for digit %d this time: ", i + 1);
+                        attempt++;
                     }
                 }
         
@@ -55,50 +64,35 @@ public class Calc {
                 isNumber = false;
             }
 
+            // should block from this until all numbers are validated, but the while loop is messing up
             System.out.print("What operation would you like to perform (Add/Subtract/Multiply/Divide): ");
             String operation = r.readLine();
 
             // tried to inverse the logic (do while loop w/ switch running first and only repeat if validOp is false 
             // (set validOp to true by default and only change it in the default case, then repeat the switch statement))
             // but that didn't work, so we get this instead
-            while(validOp == false) {
+            while(!validOp) {
                 // used if statement at first but switches exist lol
                 switch(operation.toLowerCase()) {
                     case "add":
-                        calcs.add(add(numbers));
-                        operations.add("Addition");
-                        validOp = true;
-                        break;
                     case "+":
                         calcs.add(add(numbers));
                         operations.add("Addition");
                         validOp = true;
                         break;
                     case "subtract":
-                        calcs.add(subtract(numbers));
-                        operations.add("Subtraction");
-                        validOp = true;
-                        break;
                     case "-":
                         calcs.add(subtract(numbers));
                         operations.add("Subtraction");
                         validOp = true;
                         break;
                     case "multiply":
-                        calcs.add(multiply(numbers));
-                        operations.add("Multiplication");
-                        validOp = true;
-                        break;
                     case "*":
                         calcs.add(multiply(numbers));
                         operations.add("Multiplication");
                         validOp = true;
                         break;
                     case "divide":
-                        calcs.add(divide(numbers));
-                        operations.add("Division");
-                        validOp = true;
-                        break;
                     case "/":
                         calcs.add(divide(numbers));
                         operations.add("Division");
