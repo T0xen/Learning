@@ -265,4 +265,43 @@ public class CalcTest {
         Assert.assertFalse(validOp);
     }
 
+    @Test
+    public void testMode0() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "bwaah";
+        
+        // validate input (should fail bc invalid input)
+        boolean result = calc.mode(input);
+
+        // verify that it matches
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testMode1() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "no";
+        
+        // validate input (should be false bc not singleLineMode)
+        boolean result = calc.mode(input);
+
+        // verify that it matches
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testMode2() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "y";
+        
+        // validate input (should be false bc not singleLineMode)
+        boolean result = calc.mode(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
 }
