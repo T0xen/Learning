@@ -20,6 +20,7 @@ public class Calc {
         
         operand = "";
         modeInput = ""; // track user's mode input for later
+        String mode = "";
 
         int counter = 0;
 
@@ -28,15 +29,37 @@ public class Calc {
         invalidInputs = new ArrayList<String>();
         operations = new ArrayList<String>();
 
-        String test = "-2";
-        double testResult = Double.parseDouble(test);
-        System.out.println(testResult);
-
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.print("Currently the operations that can be performed are addition, subtraction, multiplication, and division. Numbers with decimals can be used.\n");
         while (!userDone) {
-            singleLineMode = mode(counter);
+            //singleLineMode = mode(counter);
+
+            if(counter == 0) {
+                System.out.print("Would you like to use single line mode (e.g. 2 + 2 + 2)? Your input will be saved (Y/N): ");
+            } else {
+                System.out.print("Would you like to use single line mode? Press enter if you would like to stay in the selected mode (Y/N): ");
+            }
+
+            mode = modeInput; // store modeInput for 2nd iteration+ so pressing enter keeps you in mode
+            modeInput = r.readLine();
+
+            if(modeInput.length() == 0 && mode.length() != 0) {
+                modeInput = mode;
+            }
+
+            while(!validInput) {
+                if (modeInput.equalsIgnoreCase("yes") || modeInput.equalsIgnoreCase("y")) {
+                    singleLineMode = true;
+                    validInput = true;
+                } else if (modeInput.equalsIgnoreCase("no") || modeInput.equalsIgnoreCase("n")) {
+                    singleLineMode = false;
+                    validInput = true;
+                } else {
+                    System.out.print("Please enter yes or no this time: ");
+                    modeInput = r.readLine();
+                }
+            }
 
             if(!singleLineMode) {
                 validateInputs();
@@ -71,6 +94,8 @@ public class Calc {
                     completed = r.readLine();
                 }
             }
+
+            validInput = false;
         }
 
         // calc output report (could extend to maybe show the math when allowing for single line inputs)
@@ -211,6 +236,7 @@ public class Calc {
                 isNumber = false;
     }
 
+    // TODO: Determine if this method should be removed
     // Determines which mode the user wants; was broken out into a function for testing (& I thought I would need to 
     // call it twice based on how the code worked before it was broken out into a function)
     public static boolean mode(int iteration) {
@@ -219,38 +245,38 @@ public class Calc {
         String mode = "";
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
+        if(iteration == 0) {
+            System.out.print("Would you like to use single line mode (e.g. 2 + 2 + 2)? Your input will be saved (Y/N): ");
+        } else {
+            System.out.print("Would you like to use single line mode again? Press enter if you would like to stay in the selected mode (Y/N): ");
+        }
+
         while(!validInput) {
-            if(iteration == 0) {
-                System.out.print("Would you like to use single line mode (e.g. 2 + 2 + 2)? Your input will be saved (Y/N): ");
-            } else {
-                System.out.print("Would you like to use single line mode again? Press enter if you would like to stay in the selected mode (Y/N): ");
+            try {
+                mode = r.readLine();
+            } catch (Exception e) {
+                System.err.println("I/O Error: " + e.getMessage());
             }
             
+            if(mode.length() == 0 && modeInput.length() != 0) {
+                mode = modeInput;
+            }
+
+            if (mode.equalsIgnoreCase("yes") || mode.equalsIgnoreCase("y")) {
+                singleLineMode = true;
+                validInput = true;
+                modeInput = mode;
+            } else if (mode.equalsIgnoreCase("no") || mode.equalsIgnoreCase("n")) {
+                validInput = true;
+                modeInput = mode;
+            } else {
+                System.out.print("Please enter yes or no this time: ");
                 try {
                     mode = r.readLine();
                 } catch (Exception e) {
                     System.err.println("I/O Error: " + e.getMessage());
                 }
-                
-                if(mode.length() == 0 && modeInput.length() != 0) {
-                    mode = modeInput;
-                }
-
-                if (mode.equalsIgnoreCase("yes") || mode.equalsIgnoreCase("y")) {
-                    singleLineMode = true;
-                    validInput = true;
-                    modeInput = mode;
-                } else if (mode.equalsIgnoreCase("no") || mode.equalsIgnoreCase("n")) {
-                    validInput = true;
-                    modeInput = mode;
-                } else {
-                    System.out.print("Please enter yes or no this time: ");
-                    try {
-                        mode = r.readLine();
-                    } catch (Exception e) {
-                        System.err.println("I/O Error: " + e.getMessage());
-                    }
-                }
+            }
         }
 
         return singleLineMode;
