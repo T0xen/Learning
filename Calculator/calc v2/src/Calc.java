@@ -19,8 +19,8 @@ public class Calc {
         boolean singleLineMode = false; // if true then inputs can be "2 + 2"
         
         operand = "";
-        modeInput = ""; // track user's mode input for later
-        String mode = "";
+        modeInput = "";
+        String mode = ""; // track user's mode input for later
 
         int counter = 0;
 
@@ -70,7 +70,6 @@ public class Calc {
                 singleLineMath();
             }
             
-
             // resets for the next iteration of the while program
             validInput = false;
             numbers.clear();
@@ -81,7 +80,6 @@ public class Calc {
             System.out.print("Would you like to perform more operations (y/n): ");
             String completed = r.readLine();
 
-            // could potentially bust out into a function but eh, i think it's fine atm
             while (!validInput) {
                 if (completed.equalsIgnoreCase("no") | completed.equalsIgnoreCase("n")) {
                     userDone = true;
@@ -98,7 +96,6 @@ public class Calc {
             validInput = false;
         }
 
-        // calc output report (could extend to maybe show the math when allowing for single line inputs)
         int n = 1;
         System.out.println("Number of operations performed: " + counter);
         for (Double calc : calcs) {
@@ -109,11 +106,16 @@ public class Calc {
 
     // Reads in user input for the numbers that they want to use in their calculations
     // Broken out into a function for the sake of testing and refactoring
+    // ------------------------ Function description ^ ------------------------------------------
+    // ------------------------ Other notes | ---------------------------------------------------
     // This could be removed from a function and just put back into the if-else statement in main
+    // I tried creating a test version and it just wouldn't work for unit testing, there's potential
+    // for this being moved back into main
     public static void singleLineMath() {
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
         String input = "";
-
+        int operandNum = 1;
+        int digitNum = 1;
         System.out.print("Enter a calculation with numbers and operands separated by a space: ");
         // Java requires try-catch blocks for all user input via system.in in functions
         try {
@@ -129,51 +131,12 @@ public class Calc {
                 performOperation(operand);
             }
 
-            if(i % 2 == 1) {
-                operand = validateOperation(nums[i]);
+            if(i % 2 == 1) { // could speed up by just doing bitwise check, but eh
+                operand = validateOperation(nums[i], operandNum);
+                operandNum++;
             } else {
-                validateNumbers(nums[i], i);
-            }
-        }
-
-        // while the calculations can be performed w/ more than two variables, since different operands can be entered
-        // it's better to check every 2 iterations in the for loop and then perform it one last time to perform the final op
-        performOperation(operand);
-    }
-
-    // Reads in user input for the numbers that they want to use in their calculations
-    // Broken out into a function for the sake of testing and refactoring
-    public static void singleLineMath(String input) {
-        boolean isNumber = false;
-        double number = 0;
-        ArrayList <Boolean> invalidInput = new ArrayList<Boolean>();
-
-        String[] inputs = input.split(" ");
-
-        //TODO: finish implementing this testing function
-        for (int i = 0; i < inputs.length; i++) {
-            if(numbers.size() == 2) {
-                performOperation(operand);
-            }
-
-            if(i % 2 == 1) {
-                operand = validateOperation(inputs[i]);
-            } else {
-                while (!isNumber) {
-                    try {
-                        number = Double.parseDouble(inputs[i]);
-                        while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= Double.MIN_VALUE) {
-                            invalidInput.add(false);   
-                        }
-
-                        numbers.add(number);
-                        isNumber = true;
-                    } catch (NumberFormatException e) {
-                        invalidInput.add(false);
-                    }
-                }
-                // reset so the next try-catch block repeats while necessary
-                isNumber = false;
+                validateNumber(nums[i], digitNum);
+                digitNum++;
             }
         }
 
@@ -184,7 +147,7 @@ public class Calc {
 
     // Used to validate the numbers when in single-line mode
     // Broken up for testing and to remove bloat from the singleLineMath method
-    public static void validateNumbers(String num, int i) {
+    public static void validateNumber(String num, int i) {
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
         boolean isNumber = false;
         double number = 0;
@@ -204,12 +167,11 @@ public class Calc {
                             number = Double.parseDouble(input);
                         }
 
-                        // TODO: fix this not working w/ negative numbers for some reason
 
                         // forces that the user enters a number within the bounds while still checking
                         // for non-number inputs
-                        while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= Double.MIN_VALUE) {
-                            System.out.printf("Please enter a number that is within min/max bounds this time for digit %d: ", i + 1);
+                        while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= (-1 * Double.MAX_VALUE)) {
+                            System.out.printf("Please enter a number that is within min/max bounds this time for digit %d: ", i);
                             try {
                                 try {
                                     input = r.readLine();
@@ -228,7 +190,7 @@ public class Calc {
                         numbers.add(number);
                         isNumber = true;
                     } catch (NumberFormatException e) {
-                        System.out.printf("Error: Invalid input; please enter a number for digit %d this time: ", i + 1);
+                        System.out.printf("Error: Invalid input; please enter a number for digit %d this time: ", i);
                         attempt++;
                     }
                 }
@@ -236,53 +198,32 @@ public class Calc {
                 isNumber = false;
     }
 
-    // TODO: Determine if this method should be removed
-    // Determines which mode the user wants; was broken out into a function for testing (& I thought I would need to 
-    // call it twice based on how the code worked before it was broken out into a function)
-    public static boolean mode(int iteration) {
-        boolean validInput = false;
-        boolean singleLineMode = false;
-        String mode = "";
-        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+    // Used to validate the numbers when in single-line mode
+    // Broken up for testing and to remove bloat from the singleLineMath method
+    public static boolean validateNumber(String num) {
+        boolean isNumber = false;
+        double number = 0;
 
-        if(iteration == 0) {
-            System.out.print("Would you like to use single line mode (e.g. 2 + 2 + 2)? Your input will be saved (Y/N): ");
-        } else {
-            System.out.print("Would you like to use single line mode again? Press enter if you would like to stay in the selected mode (Y/N): ");
-        }
+        try {
+            number = Double.parseDouble(num);
 
-        while(!validInput) {
-            try {
-                mode = r.readLine();
-            } catch (Exception e) {
-                System.err.println("I/O Error: " + e.getMessage());
+            if (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= (-1 * Double.MAX_VALUE)) {
+                return isNumber; // f
             }
             
-            if(mode.length() == 0 && modeInput.length() != 0) {
-                mode = modeInput;
-            }
-
-            if (mode.equalsIgnoreCase("yes") || mode.equalsIgnoreCase("y")) {
-                singleLineMode = true;
-                validInput = true;
-                modeInput = mode;
-            } else if (mode.equalsIgnoreCase("no") || mode.equalsIgnoreCase("n")) {
-                validInput = true;
-                modeInput = mode;
-            } else {
-                System.out.print("Please enter yes or no this time: ");
-                try {
-                    mode = r.readLine();
-                } catch (Exception e) {
-                    System.err.println("I/O Error: " + e.getMessage());
-                }
-            }
+            numbers.add(number);
+            isNumber = true;
+        } catch (NumberFormatException e) {
+            return isNumber; // f
         }
-
-        return singleLineMode;
+        
+        return isNumber;
     }
 
-    // Tests the core functionality of the mode method via unit testing
+    
+
+    // Tests the core functionality of mode selection via unit testing
+    // Was based on a method of the same name but that one broke for some reason
     public static boolean mode(String mode) {
         boolean validInput = true;
         boolean singleLineMode = false;
@@ -307,7 +248,7 @@ public class Calc {
 
     // Reads in the user input for operation type and stores it to an ArrayList of operands
     // to perform operations on single-line inputs
-    public static String validateOperation(String operation) {
+    public static String validateOperation(String operation, int operandNum) {
         boolean validOperation = false;
         BufferedReader op = new BufferedReader(new InputStreamReader(System.in));
 
@@ -330,7 +271,7 @@ public class Calc {
                     validOperation = true;
                     break;
                 default:
-                    System.out.print("Please enter a valid operand for operand this time: ");
+                    System.out.printf("Please enter a valid operand for operand %d this time: ", operandNum);
                     // for some reason Java throws an error when trying to use readLine() only in
                     // functions outside of main so I had to put a try-catch block
                     try {
@@ -342,6 +283,31 @@ public class Calc {
             }
         }
         return operation;
+    }
+
+    // Reads in the user input for operation type and stores it to an ArrayList of operands
+    // to perform operations on single-line inputs
+    public static boolean validateOperation(String operation) {
+        boolean validOperation = false;
+
+        switch (operation.toLowerCase()) {
+            case "+":
+                validOperation = true;
+                break;
+            case "-":
+                validOperation = true;
+                break;
+            case "*":
+                validOperation = true;
+                break;
+            case "/":
+                validOperation = true;
+                break;
+            default:
+                validOperation = false;
+                break;
+        }
+        return validOperation;
     }
 
     // Reads in the user input for operation type and stores it to an ArrayList of operands
@@ -365,6 +331,35 @@ public class Calc {
         numbers.clear();
         numbers.add(calcs.get(calcs.size() - 1));
         
+    }
+
+    // Testing version of performOperation, since all the inputs into the normal version
+    // are validated beforehand, this is less so about validating the inputs and moreso
+    // the functionality.
+    public static double performOperation(String operation, ArrayList<Double> nums) {
+        double result = 0;
+        switch (operation.toLowerCase()) {
+            case "+":
+                result = add(nums);
+                break;
+            case "-":
+                result = subtract(nums);
+                break;
+            case "*":
+                result = multiply(nums);
+                break;
+            case "/":
+                result = divide(nums);
+                break;
+            default:
+                result = Double.MIN_VALUE;
+                break; // included to be safe
+        }
+
+        nums.clear();
+        nums.add(result);
+        
+        return result;
     }
 
     // Reads in user input for the numbers that they want to use in their calculations
@@ -393,7 +388,7 @@ public class Calc {
                         number = Double.parseDouble(nums[i]);
                         // forces that the user enters a number within the bounds while still checking
                         // for non-number inputs
-                        while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= Double.MIN_VALUE) {
+                        while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= (-1 * Double.MAX_VALUE)) {
                             System.out.printf(
                                     "Please enter a number that is within min/max bounds this time for digit %d: ", i + 1);
                             try {
@@ -441,7 +436,7 @@ public class Calc {
         for (int i = 0; i < nums.length; i++) {
             try {
                 number = Double.parseDouble(nums[i]);
-                if(!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= Double.MIN_VALUE) {
+                if(!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= (-1 * Double.MAX_VALUE)) {
                     wereInputsValid.add(false);
                 }
                 wereInputsValid.add(true);
