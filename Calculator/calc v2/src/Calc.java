@@ -97,7 +97,7 @@ public class Calc {
         }
 
         int n = 1;
-        System.out.println("Number of operations performed: " + counter);
+        System.out.println("Number of calculations performed: " + counter);
         for (Double calc : calcs) {
             System.out.printf("Operation %d (%s) output: %f \n", n, operations.get(n - 1), calc);
             n++;
@@ -386,30 +386,33 @@ public class Calc {
                 try {
                     if (attempt == 0) {
                         number = Double.parseDouble(nums[i]);
-                        // forces that the user enters a number within the bounds while still checking
-                        // for non-number inputs
-                        while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= (-1 * Double.MAX_VALUE)) {
-                            System.out.printf(
-                                    "Please enter a number that is within min/max bounds this time for digit %d: ", i + 1);
-                            try {
-                                try {
-                                    input = r.readLine();
-                                } catch (Exception e) {
-                                    System.err.println("I/O Error: " + e.getMessage());
-                                }
-                                number = Double.parseDouble(input);
-                            } catch (NumberFormatException e) {
-                                // if the user enters something that isn't a within the min/max bounds and then enters
-                                // something else that isn't a number then print this part out too
-                                System.out.print("Error: Invalid input. ");
-                                attempt++;
-                            }
-                        }
                     } else {
                         try {
-                            number = Double.parseDouble(r.readLine());
+                            input = r.readLine();
                         } catch (Exception e) {
                             System.err.println("I/O Error: " + e.getMessage());
+                        }
+
+                        number = Double.parseDouble(input);
+                    }
+
+                    // forces that the user enters a number within the bounds while still checking
+                    // for non-number inputs
+                    while (!Double.isFinite(number) || number >= Double.MAX_VALUE || number <= (-1 * Double.MAX_VALUE)) {
+                        System.out.printf(
+                                "Please enter a number that is within min/max bounds this time for digit %d: ", i + 1);
+                        try {
+                            try {
+                                input = r.readLine();
+                            } catch (Exception e) {
+                                System.err.println("I/O Error: " + e.getMessage());
+                            }
+                            number = Double.parseDouble(input);
+                        } catch (NumberFormatException e) {
+                            // if the user enters something that isn't a within the min/max bounds and then enters
+                            // something else that isn't a number then print this part out too
+                            System.out.print("Error: Invalid input. ");
+                            attempt++;
                         }
                     }
 
