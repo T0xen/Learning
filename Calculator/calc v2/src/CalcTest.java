@@ -125,7 +125,7 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs0() {
+    public void testValidateInputs0() {
         // initialize calc
         Calc calc = new Calc();
         
@@ -139,11 +139,11 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs1() {
+    public void testValidateInputs1() {
         // initialize calc
         Calc calc = new Calc();
         
-        double invalid = Double.MIN_VALUE;
+        double invalid = -1 * Double.MAX_VALUE;
         String input = String.valueOf(invalid);
         // validate input
         boolean validInputs = calc.validateInputs(input);
@@ -153,7 +153,7 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs2() {
+    public void testValidateInputs2() {
         // initialize calc
         Calc calc = new Calc();
         
@@ -166,7 +166,7 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs3() {
+    public void testValidateInputs3() {
         // initialize calc
         Calc calc = new Calc();
         
@@ -179,7 +179,7 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs4() {
+    public void testValidateInputs4() {
         // initialize calc
         Calc calc = new Calc();
         
@@ -192,7 +192,7 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs5() {
+    public void testValidateInputs5() {
         // initialize calc
         Calc calc = new Calc();
         
@@ -205,7 +205,7 @@ public class CalcTest {
     }
 
     @Test
-    public void testvalidateInputs6() {
+    public void testValidateInputs6() {
         // initialize calc
         Calc calc = new Calc();
         
@@ -263,6 +263,232 @@ public class CalcTest {
 
         // verify that it matches
         Assert.assertFalse(validOp);
+    }
+
+    @Test
+    public void testMode0() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "bwaah";
+        
+        // validate input (should fail bc invalid input)
+        boolean result = calc.mode(input);
+
+        // verify that it matches
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testMode1() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "no";
+        
+        // validate input (should be false bc not singleLineMode)
+        boolean result = calc.mode(input);
+
+        // verify that it matches
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testMode2() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "y";
+        
+        // validate input (should be false bc not singleLineMode)
+        boolean result = calc.mode(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testValidateNumber0() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.numbers = new ArrayList<Double>();
+        String input = "2";
+        
+        // validate input (should be true bc number)
+        boolean result = calc.validateNumber(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testValidateNumber1() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.numbers = new ArrayList<Double>();
+        String input = "-2";
+        
+        // validate input (should be true bc number)
+        boolean result = calc.validateNumber(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testValidateNumber2() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.numbers = new ArrayList<Double>();
+        String input = "what";
+        
+        // validate input (should be false bc not number)
+        boolean result = calc.validateNumber(input);
+
+        // verify that it matches
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testValidateOperation0() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "what";
+        
+        // validate input (should be false bc not operand)
+        boolean result = calc.validateOperation(input);
+
+        // verify that it matches
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testValidateOperation1() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "+";
+        
+        // validate input (should be true bc operand)
+        boolean result = calc.validateOperation(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testValidateOperation2() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "-";
+        
+        // validate input (should be true bc operand)
+        boolean result = calc.validateOperation(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testValidateOperation3() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "*";
+        
+        // validate input (should be true bc operand)
+        boolean result = calc.validateOperation(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testValidateOperation4() {
+        // initialize calc
+        Calc calc = new Calc();
+        String input = "/";
+        
+        // validate input (should be true bc operand)
+        boolean result = calc.validateOperation(input);
+
+        // verify that it matches
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testPerformOperation0() {
+        // initialize calc
+        Calc calc = new Calc();
+        ArrayList<Double> numbers = new ArrayList<Double>();
+        // simulated input = 2 + 2 + 2 + 2
+        numbers.add(2.0);
+        String[] operands = {"+", "+", "+"};
+        double result = 0;
+
+        // perform operations
+        for (String string : operands) {
+            numbers.add(2.0);
+            result = calc.performOperation(string, numbers);
+        }
+
+        // verify that it matches
+        Assert.assertEquals(8, result, 0.01);
+    }
+
+    @Test
+    public void testPerformOperation1() {
+        // initialize calc
+        Calc calc = new Calc();
+        ArrayList<Double> numbers = new ArrayList<Double>();
+        // simulated input = -2 + 3 - 3 - 3
+        numbers.add(-2.0);
+        String[] operands = {"+", "-", "-"};
+        double result = 0;
+
+        // perform operations
+        for (String string : operands) {
+            numbers.add(3.0);
+            result = calc.performOperation(string, numbers);
+        }
+
+        // verify that it matches
+        Assert.assertEquals(-5, result, 0.01);
+    }
+
+    @Test
+    public void testPerformOperation2() {
+        // initialize calc
+        Calc calc = new Calc();
+        ArrayList<Double> numbers = new ArrayList<Double>();
+        // simulated input = 2 + 1.5 - 1.5 * 1.5 / 1.5
+        numbers.add(2.0);
+        String[] operands = {"+", "-", "*", "/"};
+        double result = 0;
+
+        // perform operations
+        for (String string : operands) {
+            numbers.add(1.5);
+            result = calc.performOperation(string, numbers);
+        }
+
+        // verify that it matches
+        Assert.assertEquals(2, result, 0.01);
+    }
+
+    @Test
+    public void testPerformOperation3() {
+        // initialize calc
+        Calc calc = new Calc();
+        ArrayList<Double> numbers = new ArrayList<Double>();
+        // simulated input = -2 + 3 - 3 - 3
+        numbers.add(2.0);
+        String[] operands = {"what"};
+        double result = 0;
+
+        // perform operations
+        for (String string : operands) {
+            numbers.add(1.5);
+            result = calc.performOperation(string, numbers);
+        }
+
+        // verify that it matches
+        Assert.assertEquals(Double.MIN_VALUE, result, 0.01);
     }
 
 }
