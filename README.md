@@ -13,10 +13,13 @@ This is a simple calculator using Java since I wanted to gain experience writing
 
 ## Iteration 2 - Expanding on Usefullness/Useability
 
-- Change from floats to doubles
+- Changed type from floats to doubles
+- Tested feedback inputs from professor
 - More than 2 variables per operation
+- Unit Testing w/ JUnit
 - Code refactoring and cleanup
-- Allow an entire operation to be written in one line and parsed
+- Mode switch between single-line and multi-line calculations
+- Allow an entire calculation to be written in one line and parsed
 
 ## Iteration 3 & Beyond (Planned) - Adding More Technically Intensive Features
 
