@@ -140,6 +140,7 @@ public class Calc {
         if(nums.length == 1) {
             validateNumber(nums[0], digitNum);
             calcs.add(numbers.get(numbers.size() - 1));
+            operations.add("Nothing");
             return;
         }
 
