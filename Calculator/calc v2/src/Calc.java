@@ -6,7 +6,6 @@ import java.util.ArrayList; // Need to do more than 2 var operations and store o
 public class Calc {
     static ArrayList<Double> numbers;
     static ArrayList<Double> calcs;
-    static ArrayList<String> invalidInputs;
     static ArrayList<String> operations;
 
     static String operand;
@@ -26,15 +25,12 @@ public class Calc {
 
         numbers = new ArrayList<Double>();
         calcs = new ArrayList<Double>();
-        invalidInputs = new ArrayList<String>();
         operations = new ArrayList<String>();
 
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.print("Currently the operations that can be performed are addition, subtraction, multiplication, and division. Numbers with decimals can be used.\n");
         while (!userDone) {
-            //singleLineMode = mode(counter);
-
             if(counter == 0) {
                 System.out.print("Would you like to use single line mode (e.g. 2 + 2 + 2)? Your input will be saved (Y/N): ");
             } else {
@@ -116,12 +112,66 @@ public class Calc {
         String input = "";
         int operandNum = 1;
         int digitNum = 1;
+
+        //double result = 0;
+
         System.out.print("Enter a calculation with numbers and operands separated by a space: ");
         // Java requires try-catch blocks for all user input via system.in in functions
         try {
             input = r.readLine();
         } catch (Exception e) {
             System.err.println("I/O Error: " + e.getMessage());
+        }
+
+        // this + if-statement for using the result variable, it looks weird, but the implementation kinda
+        // breaks if I try to do it a different way
+        char firstChar = input.charAt(0);
+        
+        if((firstChar == '+' || firstChar == '-' || firstChar == '*' || firstChar == '/') && input.charAt(1) == ' ' && calcs.size() > 0) {
+            String result = Double.toString(calcs.get(calcs.size() - 1));
+            input = " " + input;
+            result = result.concat(input);
+            input = result;
+        }
+
+        String[] nums = input.split(" ");
+
+        for (int i = 0; i < nums.length; i++) {
+            if(numbers.size() == 2) {
+                performOperation(operand);
+            }
+
+            if(i % 2 == 1) { // could speed up by just doing bitwise check, but eh
+                operand = validateOperation(nums[i], operandNum);
+                operandNum++;
+            } else {
+                validateNumber(nums[i], digitNum);
+                digitNum++;
+            }
+        }
+
+        // while the calculations can be performed w/ more than two variables, since different operands can be entered
+        // it's better to check every 2 iterations in the for loop and then perform it one last time to perform the final op
+        performOperation(operand);
+    }
+
+    // Reads in input to perform calculations for testing
+    public static void singleLineMath(String input) {
+        int operandNum = 1;
+        int digitNum = 1;
+
+
+        System.out.print("Enter a calculation with numbers and operands separated by a space: ");
+
+        // this + if-statement for using the result variable, it looks weird, but the implementation kinda
+        // breaks if I try to do it a different way
+        char firstChar = input.charAt(0);
+        
+        if((firstChar == '+' || firstChar == '-' || firstChar == '*' || firstChar == '/') && input.charAt(1) == ' ' && calcs.size() > 0) {
+            String result = Double.toString(calcs.get(calcs.size() - 1));
+            input = " " + input;
+            result = result.concat(input);
+            input = result;
         }
 
         String[] nums = input.split(" ");
