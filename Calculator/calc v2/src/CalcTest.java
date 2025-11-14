@@ -491,4 +491,94 @@ public class CalcTest {
         Assert.assertEquals(Double.MIN_VALUE, result, 0.01);
     }
 
+    @Test
+    public void testResult0() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.operations = new ArrayList<String>();
+        calc.numbers = new ArrayList<Double>();
+        calc.calcs = new ArrayList<Double>();
+        calc.calcs.add(2.9);
+        
+        String input = "+ 2.9";
+
+        calc.singleLineMath(input);
+        double result = calc.calcs.get(calc.calcs.size() - 1);
+
+        
+        // verify that it matches
+        Assert.assertEquals(5.8, result, 0.01);
+    }
+
+    @Test
+    public void testResult1() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.operations = new ArrayList<String>();
+        calc.numbers = new ArrayList<Double>();
+        calc.calcs = new ArrayList<Double>();
+        calc.calcs.add(2.9);
+        
+        String input = "- 2";
+
+        calc.singleLineMath(input);
+        double result = calc.calcs.get(calc.calcs.size() - 1);
+        
+        // verify that it matches
+        Assert.assertEquals(0.9, result, 0.01);
+    }
+
+    @Test
+    public void testResult2() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.operations = new ArrayList<String>();
+        calc.numbers = new ArrayList<Double>();
+        calc.calcs = new ArrayList<Double>();
+        calc.calcs.add(2.9);
+        
+        String input = "* 2.9";
+
+        calc.singleLineMath(input);
+        double result = calc.calcs.get(calc.calcs.size() - 1);
+        
+        // verify that it matches
+        Assert.assertEquals(8.41, result, 0.01);
+    }
+
+    @Test
+    public void testResult3() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.operations = new ArrayList<String>();
+        calc.numbers = new ArrayList<Double>();
+        calc.calcs = new ArrayList<Double>();
+        calc.calcs.add(2.9);
+        
+        String input = "/ 1.5";
+
+        calc.singleLineMath(input);
+        double result = calc.calcs.get(calc.calcs.size() - 1);
+        
+        // verify that it matches
+        Assert.assertEquals(1.93, result, 0.01);
+    }
+
+    @Test
+    public void testSingleLineMath0() {
+        // initialize calc
+        Calc calc = new Calc();
+        calc.operations = new ArrayList<String>();
+        calc.numbers = new ArrayList<Double>();
+        calc.calcs = new ArrayList<Double>();
+        
+        String input = "2 + 1.5 + 2";
+
+        calc.singleLineMath(input);
+        double result = calc.calcs.get(calc.calcs.size() - 1);
+        
+        // verify that it matches
+        Assert.assertEquals(5.5, result, 0.01);
+    }
+
 }
