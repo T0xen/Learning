@@ -123,6 +123,7 @@ public class Calc {
             System.err.println("I/O Error: " + e.getMessage());
         }
 
+        
         // this + if-statement for using the result variable, it looks weird, but the implementation kinda
         // breaks if I try to do it a different way
         char firstChar = input.charAt(0);
@@ -133,8 +134,15 @@ public class Calc {
             result = result.concat(input);
             input = result;
         }
-
+        
         String[] nums = input.split(" ");
+
+        if(nums.length == 1) {
+            validateNumber(nums[0], digitNum);
+            calcs.add(numbers.get(numbers.size() - 1));
+            return;
+        }
+
 
         for (int i = 0; i < nums.length; i++) {
             if(numbers.size() == 2) {
@@ -175,6 +183,12 @@ public class Calc {
         }
 
         String[] nums = input.split(" ");
+
+        if(nums.length == 1) {
+            validateNumber(nums[0], digitNum);
+            calcs.add(numbers.get(numbers.size() - 1));
+            return;
+        }
 
         for (int i = 0; i < nums.length; i++) {
             if(numbers.size() == 2) {
@@ -428,7 +442,15 @@ public class Calc {
             System.err.println("I/O Error: " + e.getMessage());
         }
 
+
+
         String[] nums = input.split(" ");
+
+        //char firstChar = input.charAt(0);
+        
+        if((nums[0].equalsIgnoreCase("result")) && calcs.size() > 0) {
+            nums[0] = Double.toString(calcs.get(calcs.size() - 1));
+        }
 
         for (int i = 0; i < nums.length; i++) {
             int attempt = 0; //
